@@ -9,11 +9,8 @@ import { JSONFile } from 'lowdb/node';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const dbFile = join(__dirname, `../src/data/db.json`);
 const adapter = new JSONFile(dbFile);
-const db:any = new Low(adapter);
+const db: any = new Low(adapter);
 await db.read();
-
-const _jobs: Job[] = JSON.parse(fs.readFileSync('./src/data/jobs.json', 'utf8'));
-const skillInfos: any = JSON.parse(fs.readFileSync('./src/data/skillInfos.json', 'utf8'));
 
 export const getApiInstructionsHtml = () => {
 	return `
@@ -33,6 +30,8 @@ a, h1 {
 }
 
 export const getJobs = (): Job[] => {
+	const _jobs: Job[] = db.data.jobs;
+
 	const jobs: Job[] = [];
 	_jobs.forEach(_job => {
 		const job = {
@@ -45,6 +44,7 @@ export const getJobs = (): Job[] => {
 }
 
 export const getTodos = (): Todo[] => {
+	const _jobs: Job[] = db.data.jobs;
 	return _jobs.map((job: Job) => {
 		return {
 			todoText: job.todo,
@@ -84,6 +84,7 @@ export const getSkillsWithList = (skillList: string) => {
 }
 
 export const lookupSkill = (idCode: string): Skill => {
+	const skillInfos: any = db.data.skillInfos;
 	const _skill = skillInfos[idCode];
 	if (_skill === undefined) {
 		return {
@@ -96,8 +97,8 @@ export const lookupSkill = (idCode: string): Skill => {
 			idCode,
 		}
 	}
-} 
+}
 
-export const getTest = async () => {
+export const getTest = () => {
 	return db.data.test;
 }
