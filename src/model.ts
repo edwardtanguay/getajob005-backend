@@ -87,3 +87,7 @@ export const lookupSkill = (idCode: string): Skill => {
 		}
 	}
 } 
+
+export const getTest = () => {
+	return 'test';
+}
