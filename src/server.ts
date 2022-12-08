@@ -22,9 +22,17 @@ app.get('/totaledSkills', (req: express.Request, res: express.Response) => {
 	res.json(model.getTotaledSkills());
 });
 
-app.delete('/job/:id', (req: express.Request, res: express.Response) => {
-	const id = req.params.id;
-	res.send(`will delete job ${id}`);
+app.delete('/job/:id', async (req: express.Request, res: express.Response) => {
+	const id = Number(req.params.id);
+	const deletedObject = await model.deleteJob(id);
+	if (deletedObject === undefined) {
+		res.status(409).send({
+			error: true,
+			message: `job with id ${id} does not exist, deletion failed`
+		})
+	} else {
+		res.status(200).json(deletedObject);
+	}
 });
 
 app.listen(port, () => {
