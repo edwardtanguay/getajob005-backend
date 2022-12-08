@@ -22,6 +22,11 @@ app.get('/totaledSkills', (req: express.Request, res: express.Response) => {
 	res.json(model.getTotaledSkills());
 });
 
+app.delete('/job/:id', (req: express.Request, res: express.Response) => {
+	const id = req.params.id;
+	res.send(`will delete job ${id}`);
+});
+
 app.listen(port, () => {
 	console.log(`listening on http://localhost:${port}`);
 });
